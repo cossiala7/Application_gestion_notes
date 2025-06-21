@@ -15,7 +15,7 @@ pipeline {
 
         stage('Build de l’image Docker') {
             steps {
-                bat 'docker build -t %IMAGE_NAME% .'
+                sh 'docker build -t $IMAGE_NAME .'
             }
         }
 
@@ -26,33 +26,33 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
-                    bat 'docker push %IMAGE_NAME%'
+                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+                    sh 'docker push $IMAGE_NAME'
                 }
             }
         }
 
         stage('Démarrage avec docker-compose') {
             steps {
-                bat 'docker-compose up -d'
+                sh 'docker-compose up -d'
             }
         }
 
         stage('Deploy') {
             steps {
                 script {
-                    bat """
-                        docker container stop django_app || exit 0
-                        docker container rm django_app || exit 0
-                        docker container run -d ^
-                            --name django_app ^
-                            -e DB_NAME=gestion_notes ^
-                            -e DB_USER=django_user ^
-                            -e DB_PASSWORD=django_pass ^
-                            -e DB_HOST=mysql_django ^
-                            -p 8000:8000 ^
-                            %IMAGE_NAME%
-                    """
+                    sh '''
+                        docker container stop django_app || true
+                        docker container rm django_app || true
+                        docker container run -d \
+                            --name django_app \
+                            -e DB_NAME=gestion_notes \
+                            -e DB_USER=django_user \
+                            -e DB_PASSWORD=django_pass \
+                            -e DB_HOST=mysql_django \
+                            -p 8000:8000 \
+                            $IMAGE_NAME
+                    '''
                 }
             }
         }
