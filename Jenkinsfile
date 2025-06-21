@@ -2,7 +2,10 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "cossiala7/gestion_notes:latest"
+        DOCKER_USERNAME = "cossiala7" // username docker
+        IMAGE_VERSION = "1.${BUILD_NUMBER}"  // version dynamique de l’image
+        DOCKER_IMAGE = "${DOCKER_USERNAME}/tp-app:${IMAGE_VERSION}" // nom de l’image docker
+        DOCKER_CONTAINER = "ci-cd-html-css-app"  // nom du conteneur
         COMPOSE_PROJECT_NAME = "gestion_notes_ci"
     }
 
