@@ -1,0 +1,70 @@
+// Déclaration du pipeline Jenkins
+pipeline {
+    // Exécute le pipeline sur n'importe quel agent
+    agent any
+    // Déclarer les variables d'environnement globales
+    environment {
+        DOCKER_USERNAME = "cossiala7" // username docker
+        IMAGE_VERSION = "1.${BUILD_NUMBER}"  // version dynamique de l’image
+        DOCKER_IMAGE = "${DOCKER_USERNAME}/django_app:${IMAGE_VERSION}" // nom de l’image docker
+        DOCKER_CONTAINER = "django_app"  // nom du conteneur
+    }
+    
+    stages {
+        // Étape 1 : Récupération du code source depuis GitHub
+        stage("Checkout") {
+            steps {
+                git branch: 'master', url: 'https://github.com/cossiala7/Application_gestion_notes.git'
+            }
+        }
+        // Étape 2 : Exécution des tests
+        stage("Test") {
+            steps {
+                echo "Tests en cours"
+            }
+        }
+        // Étape 3 : Création de l'image Docker
+        stage("Build Docker Image") {
+            steps {
+                script {
+                    sh "docker build -t $DOCKER_IMAGE ."
+                }
+            }
+        }
+        // Étape 4 : Publication de l'image sur Docker Hub
+        stage("Push image to Docker Hub") {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId:'delatchaille', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+                    sh """
+                    docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+                    echo 'Docker login successful'
+                    docker push $DOCKER_IMAGE
+                    """
+                    }
+                }
+            }
+        }
+        stage('Démarrage avec docker-compose') {
+            steps {
+                sh 'docker-compose up -d'
+            }
+        }
+        // Étape 5 : Déploiement de l'application
+        stage("Deploy") {
+            steps {
+                script {
+                    sh """
+                    # Arrête le conteneur s'il existe
+                    docker container stop $DOCKER_CONTAINER || true
+                    # supprime le conteneur s'il existe
+                    docker container rm $DOCKER_CONTAINER || true
+                    # Lance un nouveau conteneur en mode détaché(en arrière-plan )
+                    docker container run -d --name $DOCKER_CONTAINER -p 8000:80 $DOCKER_IMAGE
+                    """
+                }
+            }
+        }
+        
+    }
+}

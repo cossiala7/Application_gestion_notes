@@ -78,7 +78,6 @@ STATICFILES_DIRS = [
 
 WSGI_APPLICATION = 'gestion_notes.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
@@ -93,7 +92,6 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
 
 
 # Password validation
