@@ -7,25 +7,23 @@ pipeline {
     }
 
     environment {
-        DOCKER_USERNAME = "cossiala7" // username docker
-        IMAGE_VERSION = "1.${BUILD_NUMBER}"  // version dynamique de l’image
-        DOCKER_IMAGE = "${DOCKER_USERNAME}/django_app:${IMAGE_VERSION}" // nom de l’image docker
-        DOCKER_CONTAINER = "django_app"  // nom du conteneur
+        DOCKER_USERNAME = "cossiala7"                         // Ton identifiant Docker Hub
+        IMAGE_VERSION   = "1.${BUILD_NUMBER}"                // Version auto-incrémentée
+        DOCKER_IMAGE    = "${DOCKER_USERNAME}/django_app:${IMAGE_VERSION}"
+        DOCKER_CONTAINER = "django_app"
         COMPOSE_PROJECT_NAME = "gestion_notes_ci"
     }
 
     stages {
-        stage('Cloner le projet') {
+        stage('Vérification Docker') {
             steps {
-                git 'https://github.com/cossiala7/Application_gestion_notes.git'
+                sh 'docker version'
             }
         }
 
         stage('Build de l’image Docker') {
             steps {
-                script{
                 sh 'docker build -t $DOCKER_IMAGE .'
-                }    
             }
         }
 
@@ -36,8 +34,10 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
-                    sh 'docker push $DOCKER_IMAGE'
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push $DOCKER_IMAGE
+                    '''
                 }
             }
         }
@@ -48,25 +48,21 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Déploiement') {
             steps {
-                script {
-                    sh '''
-                        docker container stop django_app || true
-                        docker container rm django_app || true
-                        docker container run -d \
-                            --name django_app \
-                            -e DB_NAME=gestion_notes \
-                            -e DB_USER=django_user \
-                            -e DB_PASSWORD=django_pass \
-                            -e DB_HOST=mysql_django \
-                            -p 8000:8000 \
-                            $IMAGE_NAME
-                    '''
-                }
+                sh '''
+                    docker container stop $DOCKER_CONTAINER || true
+                    docker container rm $DOCKER_CONTAINER || true
+                    docker run -d \
+                        --name $DOCKER_CONTAINER \
+                        -e DB_NAME=gestion_notes \
+                        -e DB_USER=django_user \
+                        -e DB_PASSWORD=django_pass \
+                        -e DB_HOST=mysql_django \
+                        -p 8000:8000 \
+                        $DOCKER_IMAGE
+                '''
             }
         }
     }
-
-    
 }
