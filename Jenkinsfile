@@ -63,34 +63,5 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            echo "Build status: ${currentBuild.result}"
-        }
-        success {
-            emailext (
-                subject: "✅ Déploiement réussi - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """
-                    Le déploiement a réussi !
-                    Job: ${env.JOB_NAME}
-                    Build #${env.BUILD_NUMBER}
-                    Consulter: ${env.BUILD_URL}
-                """,
-                to: 'ayambathieu8@gmail.com, antaliguerefab@gmail.com, diawpmkamil@gmail.com, djimsoncompany@gmail.com, diopmadicke351@gmail.com'
-            )
-        }
-        failure {
-            emailext (
-                subject: "❌ Échec du déploiement - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """
-                    Le déploiement a échoué !
-                    Job: ${env.JOB_NAME}
-                    Build #${env.BUILD_NUMBER}
-                    Erreur: ${currentBuild.currentResult}
-                    Consulter: ${env.BUILD_URL}
-                """,
-                to: 'sylcohennossiala@gmail.com, devops@example.com'
-            )
-        }
-    }
+    
 }
