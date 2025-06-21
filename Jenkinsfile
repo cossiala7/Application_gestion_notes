@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_USERNAME = "cossiala7" // username docker
         IMAGE_VERSION = "1.${BUILD_NUMBER}"  // version dynamique de l’image
-        DOCKER_IMAGE = "${DOCKER_USERNAME}/tp-app:${IMAGE_VERSION}" // nom de l’image docker
-        DOCKER_CONTAINER = "ci-cd-html-css-app"  // nom du conteneur
+        DOCKER_IMAGE = "${DOCKER_USERNAME}/django_app:${IMAGE_VERSION}" // nom de l’image docker
+        DOCKER_CONTAINER = "Django_app"  // nom du conteneur
         COMPOSE_PROJECT_NAME = "gestion_notes_ci"
     }
 
@@ -18,7 +18,9 @@ pipeline {
 
         stage('Build de l’image Docker') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                script{
+                sh 'docker build -t $DOCKER_IMAGE .'
+                }    
             }
         }
 
