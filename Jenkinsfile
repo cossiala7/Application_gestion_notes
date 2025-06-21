@@ -9,7 +9,7 @@ pipeline {
         DOCKER_IMAGE = "${DOCKER_USERNAME}/django_app:${IMAGE_VERSION}" // nom de l’image docker
         DOCKER_CONTAINER = "django_app"  // nom du conteneur
     }
-    // Les étapes du pipeline
+    
     stages {
         // Étape 1 : Récupération du code source depuis GitHub
         stage("Checkout") {
