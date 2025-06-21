@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Matières - EduGrades</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin-dashboard.html">
+                <i class="bi bi-shield-lock me-2"></i>
+                EduGrades - Administration
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="admin-dashboard.html">
+                    <i class="bi bi-speedometer2 me-1"></i>
+                    Tableau de Bord
+                </a>
+                <a class="nav-link" href="index.html">
+                    <i class="bi bi-box-arrow-right me-1"></i>
+                    Déconnexion
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="container-fluid py-2 bg-white border-bottom">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="admin-dashboard.html">Accueil</a></li>
+                <li class="breadcrumb-item active">Gestion des Matières</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col">
+                <h2>
+                    <i class="bi bi-book text-success me-2"></i>
+                    Gestion des Matières
+                </h2>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSubjectModal">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Ajouter une Matière
+                </button>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control" id="searchSubject" placeholder="Rechercher une matière...">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <select class="form-select" id="filterSemester">
+                    <option value="">Tous les semestres</option>
+                    <option value="1">Semestre 1</option>
+                    <option value="2">Semestre 2</option>
+                    <option value="3">Semestre 3</option>
+                    <option value="4">Semestre 4</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Subjects Table -->
+        <div class="card border-0 shadow">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Code Matière</th>
+                                <th>Nom de la Matière</th>
+                                <th>Coefficient</th>
+                                <th>Semestre</th>
+                                <th>Professeur</th>
+                                <th>Heures/Semaine</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subjectsTableBody">
+                            <tr>
+                                <td><strong>MATH201</strong></td>
+                                <td>Mathématiques Avancées</td>
+                                <td><span class="badge bg-primary">3</span></td>
+                                <td>Semestre 2</td>
+                                <td>Dr. Bernard</td>
+                                <td>4h</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-success" onclick="editSubject('MATH201')">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-info" onclick="viewSubject('MATH201')">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteSubject('MATH201')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>PHYS101</strong></td>
+                                <td>Physique Générale</td>
+                                <td><span class="badge bg-primary">2</span></td>
+                                <td>Semestre 1</td>
+                                <td>Prof. Durand</td>
+                                <td>3h</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-success" onclick="editSubject('PHYS101')">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-info" onclick="viewSubject('PHYS101')">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteSubject('PHYS101')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>INFO202</strong></td>
+                                <td>Programmation Orientée Objet</td>
+                                <td><span class="badge bg-primary">2</span></td>
+                                <td>Semestre 2</td>
+                                <td>Dr. Leclerc</td>
+                                <td>6h</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-success" onclick="editSubject('INFO202')">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-info" onclick="viewSubject('INFO202')">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteSubject('INFO202')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow text-center">
+                    <div class="card-body">
+                        <i class="bi bi-book-fill text-success display-6"></i>
+                        <h4 class="mt-2">24</h4>
+                        <p class="text-muted mb-0">Total Matières</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow text-center">
+                    <div class="card-body">
+                        <i class="bi bi-calculator text-primary display-6"></i>
+                        <h4 class="mt-2">2.3</h4>
+                        <p class="text-muted mb-0">Coefficient Moyen</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow text-center">
+                    <div class="card-body">
+                        <i class="bi bi-clock text-info display-6"></i>
+                        <h4 class="mt-2">96h</h4>
+                        <p class="text-muted mb-0">Total Heures/Semaine</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow text-center">
+                    <div class="card-body">
+                        <i class="bi bi-people text-warning display-6"></i>
+                        <h4 class="mt-2">12</h4>
+                        <p class="text-muted mb-0">Professeurs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Subject Modal -->
+    <div class="modal fade" id="addSubjectModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-plus-circle me-2"></i>
+                        Ajouter une Nouvelle Matière
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" action="/admin/subjects/add/">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="subject_code" class="form-label">Code Matière *</label>
+                                <input type="text" class="form-control" id="subject_code" name="subject_code" required placeholder="Ex: MATH201">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="subject_name" class="form-label">Nom de la Matière *</label>
+                                <input type="text" class="form-control" id="subject_name" name="subject_name" required placeholder="Ex: Mathématiques Avancées">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="subject_coefficient" class="form-label">Coefficient *</label>
+                                <input type="number" class="form-control" id="subject_coefficient" name="subject_coefficient" required min="1" max="5" value="1">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="subject_semester" class="form-label">Semestre *</label>
+                                <select class="form-select" id="subject_semester" name="subject_semester" required>
+                                    <option value="">Choisir...</option>
+                                    <option value="1">Semestre 1</option>
+                                    <option value="2">Semestre 2</option>
+                                    <option value="3">Semestre 3</option>
+                                    <option value="4">Semestre 4</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="subject_hours" class="form-label">Heures/Semaine</label>
+                                <input type="number" class="form-control" id="subject_hours" name="subject_hours" min="1" max="10" placeholder="Ex: 4">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="subject_professor" class="form-label">Professeur</label>
+                                <input type="text" class="form-control" id="subject_professor" name="subject_professor" placeholder="Nom du professeur">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="subject_type" class="form-label">Type de Cours</label>
+                                <select class="form-select" id="subject_type" name="subject_type">
+                                    <option value="CM">Cours Magistral</option>
+                                    <option value="TD">Travaux Dirigés</option>
+                                    <option value="TP">Travaux Pratiques</option>
+                                    <option value="Mixte">Mixte</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject_description" class="form-label">Description</label>
+                            <textarea class="form-control" id="subject_description" name="subject_description" rows="3" placeholder="Description de la matière..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check2 me-2"></i>
+                            Créer la Matière
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Subject Modal -->
+    <div class="modal fade" id="editSubjectModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-pencil me-2"></i>
+                        Modifier la Matière
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" action="/admin/subjects/edit/">
+                    <div class="modal-body">
+                        <input type="hidden" id="edit_subject_id" name="subject_id">
+                        <!-- Same form fields as add modal -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit_subject_code" class="form-label">Code Matière *</label>
+                                <input type="text" class="form-control" id="edit_subject_code" name="subject_code" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit_subject_name" class="form-label">Nom de la Matière *</label>
+                                <input type="text" class="form-control" id="edit_subject_name" name="subject_name" required>
+                            </div>
+                        </div>
+                        <!-- Add other fields as needed -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check2 me-2"></i>
+                            Sauvegarder
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

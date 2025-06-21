@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Étudiant - EduGrades</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <!-- Branding -->
+            <div class="col-lg-6 bg-primary d-flex align-items-center justify-content-center">
+                <div class="text-center text-white">
+                    <i class="bi bi-mortarboard-fill display-1 mb-4"></i>
+                    <h2 class="fw-bold mb-3">Bienvenue</h2>
+                    <p class="lead">Accédez à votre espace personnel pour consulter vos notes et votre progression</p>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="col-lg-6 d-flex align-items-center justify-content-center">
+                <div class="w-100" style="max-width: 400px;">
+                    <div class="text-center mb-4">
+                        <h3 class="fw-bold">Connexion Étudiant</h3>
+                        <p class="text-muted">Entrez votre code étudiant pour accéder à votre espace</p>
+                    </div>
+                    {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+                    <form id="studentLoginForm" method="POST" action="{% url 'etudiant_login' %}">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="student_code" class="form-label">Code étudiant</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-key"></i></span>
+                                <input type="text" class="form-control" id="student_code" name="etudiant_code_etudiant" required placeholder="Ex: ETU2024001">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-3 mb-3">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            Se connecter
+                        </button>
+                    </form>
+
+                    <div class="text-center">
+                        <a href="{% url 'accueil' %}" class="text-decoration-none">
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Retour à l'accueil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
