@@ -5,7 +5,7 @@ pipeline {
         DOCKER_USERNAME = "cossiala7" // username docker
         IMAGE_VERSION = "1.${BUILD_NUMBER}"  // version dynamique de l’image
         DOCKER_IMAGE = "${DOCKER_USERNAME}/django_app:${IMAGE_VERSION}" // nom de l’image docker
-        DOCKER_CONTAINER = "Django_app"  // nom du conteneur
+        DOCKER_CONTAINER = "django_app"  // nom du conteneur
         COMPOSE_PROJECT_NAME = "gestion_notes_ci"
     }
 
@@ -32,7 +32,7 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
-                    sh 'docker push $IMAGE_NAME'
+                    sh 'docker push $DOCKER_IMAGE'
                 }
             }
         }
