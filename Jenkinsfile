@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label "Windows"
-    }
+    agent any
 
     environment {
         IMAGE_NAME = "cossiala7/gestion_notes:latest"
