@@ -23,3 +23,4 @@ Assurez-vous d’avoir Docker et Docker Compose installés.
 ```bash
 git clone https://github.com/cossiala7/Application_gestion_notes.git
 cd Application_gestion_notes
+## finalisation du projet
