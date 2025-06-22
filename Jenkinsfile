@@ -17,11 +17,6 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/cossiala7/Application_gestion_notes.git'
             }
         }
-        stage('Changer URL remote') {
-            steps {
-                sh 'git config remote.origin.url https://github.com/cossiala7/Application_gestion_notes.git'
-            }
-        }
         // Étape 2 : Exécution des tests
         stage("Test") {
             steps {
