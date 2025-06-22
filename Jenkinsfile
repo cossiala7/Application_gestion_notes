@@ -10,6 +10,17 @@ pipeline {
     }
     
     stages {
+         stage('Check Git') {
+            steps {
+                script {
+                    // Vérifie si le workspace est un dépôt Git
+                    if (!fileExists('.git')) {
+                        sh 'git init'
+                        sh 'git remote add origin https://github.com/cossiala7/Application_gestion_notes.git'
+                    }
+                }
+            }
+        }
         // Étape 1 : Récupération du code source depuis GitHub
         stage("Checkout") {
             steps {
