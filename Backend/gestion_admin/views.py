@@ -22,15 +22,14 @@ def admin_login(request):
         else:
             messages.error(request, "Identifiants incorrects ou vous n'avez pas les droits administrateur.")
     
-    return render(request, 'gestion_admin/admin-login.html')
+    return render(request, 'admin-login.html')
 
-@login_required
+
 def admin_logout(request):
     auth.logout(request)
     messages.success(request, "Déconnexion réussie.")
     return redirect('accueil')
 
-@login_required
 def admin_dashboard(request):
     if not request.user.is_superuser:
         return redirect('accueil')
@@ -43,7 +42,7 @@ def admin_dashboard(request):
     }
     return render(request, 'admin-dashboard.html', stats)
 
-@login_required
+
 def admin_students(request):
     if not request.user.is_superuser:
         return redirect('accueil')
@@ -68,7 +67,7 @@ def admin_students(request):
         'search_term': request.GET.get('search', ''),
     })
 
-@login_required
+
 def student_crud(request, student_id=None):
     if not request.user.is_superuser:
         return redirect('accueil')
@@ -109,7 +108,7 @@ def student_crud(request, student_id=None):
         'classes': Etudiant.CLASS_CHOICES if hasattr(Etudiant, 'CLASS_CHOICES') else [],
     })
 
-@login_required
+
 def delete_student(request, student_id):
     if not request.user.is_superuser:
         return redirect('accueil')
