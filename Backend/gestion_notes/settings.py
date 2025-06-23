@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-@kbpj@nh(ajbevw7ntartt@p#jt#uxldwbpo^1ne!iupe#ele5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'gestion_notes.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, '../front-end')],
+        'DIRS': [os.path.join(BASE_DIR, '../Front-end')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,25 +72,20 @@ TEMPLATES = [
     },
 ]
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '../front-end'),
+    os.path.join(BASE_DIR, '../Front-end'),
 ]
 
 
 WSGI_APPLICATION = 'gestion_notes.wsgi.application'
 
-ALLOWED_HOSTS = ['.ngrok-free.app','03ed-154-124-59-101.ngrok-free.app' ,'127.0.0.1', 'localhost']
+
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'gestion_notes',
-        'USER': 'django_user',
-        'PASSWORD': 'django_pass',
-        'HOST': '127.0.0.1',  # ou 'localhost'
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # Fichier SQLite dans votre projet
     }
 }
 
