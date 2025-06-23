@@ -8,29 +8,6 @@ services:
     container_name: django_app
     ports:
       - "8000:8000"
-    depends_on:
-      - mysql_django
-    environment:
-      - DB_NAME=gestion_notes
-      - DB_USER=django_user
-      - DB_PASSWORD=django_pass
-      - DB_HOST=mysql_django
     volumes:
-      - ./Backend:/app
-    restart: always
-
-  mysql_django:
-    image: mysql:8.4
-    container_name: mysql_django
-    environment:
-      MYSQL_DATABASE: gestion_notes
-      MYSQL_USER: django_user
-      MYSQL_PASSWORD: django_pass
-      MYSQL_ROOT_PASSWORD: rootpass
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-
-volumes:
-  mysql_data:
+      - .:/app
+    working_dir: /app  
