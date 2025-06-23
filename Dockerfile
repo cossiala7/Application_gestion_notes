@@ -1,14 +1,23 @@
-FROM python:3.10-slim
+FROM python:3.13-slim
 
+# Définir le répertoire de travail
 WORKDIR /app
 
-COPY Backend/ /app/
+# Copier tout le contenu du projet (backend + Front-end)
+COPY . .
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Installer les dépendances
+RUN pip install --no-cache-dir -r Backend/requirements.txt
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "    python manage.py makemigrations &&     python manage.py migrate &&     echo \"from django.contrib.auth import get_user_model;           User = get_user_model();           User.objects.filter(username='superuser').exists() or           User.objects.create_superuser('superuser', 'admin@example.com', 'superuser123')\" | python manage.py shell &&     python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python Backend/manage.py makemigrations && \
+                  python Backend/manage.py migrate && \
+                  echo \"from django.contrib.auth import get_user_model; \
+                  User = get_user_model(); \
+                User.objects.filter(username='superuser').exists() or \
+                User.objects.create_superuser('superuser', 'admin@gmail.com', 'superuser123')\" | python Backend/manage.py shell && \
+                python Backend/manage.py runserver 0.0.0.0:8000"]
